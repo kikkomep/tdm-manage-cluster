@@ -27,7 +27,7 @@ function usage_error() {
 #### main ####
 cd "${ThisDir}"
 if [[ $# == 0 ]]; then
-  tag=":$(../k8s-tools/manage-cluster -v)"
+  tag=":$(../../k8s-tools/manage-cluster -v)"
 elif [[ $# == 1 ]]; then
   tag=":${1}"
 else
