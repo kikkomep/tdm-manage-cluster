@@ -15,41 +15,11 @@
 
 #docker build -f $DOCKERFILE_PATH -t $IMAGE_NAME --target ${TARGET_BUILD_STAGE} .
 
-set -o nounset
-set -o errexit
-set -o pipefail
 
 ThisDir=$( cd "$( dirname "${0}" )" >/dev/null && pwd )
 
-function usage_error() {
-  echo "Usage: $0 [tag]" >&2
-  exit 2
-}
+VERSION_TAG=$(../../k8s-tools/manage-cluster -v)
+TAGGED_IMAGE_NAME="${DOCKER_REPO}:${VERSION_TAG}"
 
-#### main ####
-cd "${ThisDir}"
-if [[ $# == 0 ]]; then
-  tag=":$(../../k8s-tools/manage-cluster -v)"
-elif [[ $# == 1 ]]; then
-  tag=":${1}"
-else
-  usage_error
-fi
-
-image_prefix=${IMAGE_NAME%-base}
-
-for target in manage-cluster-base manage-cluster-tf manage-cluster-ks; do
-  tagged_image_name="${image_prefix}-${target}:${tag}"
-  docker tag "${target}${tag}" "${tagged_image_name}"
-  docker push "${tagged_image_name}"
-done
-
-
-
-#!/bin/bash
-
-#VERSION_TAG=$(../k8s-tools/manage-cluster -v)
-#TAGGED_IMAGE_NAME="${DOCKER_REPO}:${VERSION_TAG}"
-
-#docker tag ${IMAGE_NAME} ${TAGGED_IMAGE_NAME}
-#docker push ${TAGGED_IMAGE_NAME}
+docker tag ${IMAGE_NAME} ${TAGGED_IMAGE_NAME}
+docker push ${TAGGED_IMAGE_NAME}

@@ -13,28 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -o nounset
-set -o errexit
-set -o pipefail
-
-ThisDir=$( cd "$( dirname "${0}" )" >/dev/null && pwd )
-
-function usage_error() {
-  echo "Usage: $0 [tag]" >&2
-  exit 2
-}
-
-#### main ####
-cd "${ThisDir}"
-if [[ $# == 0 ]]; then
-  tag=":$(../../k8s-tools/manage-cluster -v)"
-elif [[ $# == 1 ]]; then
-  tag=":${1}"
-else
-  usage_error
-fi
-
-for target in manage-cluster-base manage-cluster-tf manage-cluster-ks; do
-  docker build --target="${target}" -t "${target}${tag}" ..
-done
-
+docker build -f $DOCKERFILE_PATH -t $IMAGE_NAME --target ${TARGET_BUILD_STAGE} .
