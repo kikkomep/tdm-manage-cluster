@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION_TAG=$(k8s-tools/manage-cluster -v)
+VERSION_TAG=$(../k8s-tools/manage-cluster -v)
 TAGGED_IMAGE_NAME="${DOCKER_REPO}:${VERSION_TAG}"
 
 docker tag ${IMAGE_NAME} ${TAGGED_IMAGE_NAME}
