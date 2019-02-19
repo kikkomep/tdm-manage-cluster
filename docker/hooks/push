@@ -18,6 +18,7 @@
 
 ThisDir=$( cd "$( dirname "${0}" )" >/dev/null && pwd )
 
+cd ${ThisDir}
 VERSION_TAG=$(../../k8s-tools/manage-cluster -v)
 TAGGED_IMAGE_NAME="${DOCKER_REPO}:${VERSION_TAG}"
 
