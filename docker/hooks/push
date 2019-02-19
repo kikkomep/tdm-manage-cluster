@@ -38,7 +38,7 @@ fi
 
 image_prefix=${IMAGE_NAME%-base}
 
-for target in manage-cluster-tf manage-cluster-ks; do
+for target in manage-cluster-base manage-cluster-tf manage-cluster-ks; do
   tagged_image_name="${image_prefix}-${target}:${tag}"
   docker tag "${target}${tag}" "${tagged_image_name}"
   docker push "${tagged_image_name}"
