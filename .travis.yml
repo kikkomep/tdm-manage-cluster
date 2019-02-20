@@ -17,5 +17,5 @@ deploy:
   - provider: build
     script: ./docker/docker_push
     on:
-      repo: tdm-project/tdm-tools
+      repo: kikkomep/tdm-manage-cluster
       #branch: develop
