@@ -18,4 +18,4 @@ deploy:
     script: ./docker/docker_push
     on:
       repo: kikkomep/tdm-manage-cluster
-      #branch: develop
+      branch: feature/support-image-build
