@@ -15,7 +15,7 @@ script:
 
 deploy:
   - provider: script
-    script: ./docker/docker_push
+    script: ./docker/push.sh
     on:
       repo: kikkomep/tdm-manage-cluster
       branch: feature/support-image-build

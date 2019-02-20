@@ -13,29 +13,41 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-set -o nounset
 set -o errexit
 set -o pipefail
+
 
 ThisDir=$( cd "$( dirname "${0}" )" >/dev/null && pwd )
 
 function usage_error() {
-  echo "Usage: $0 [tag]" >&2
+  echo "set DOCKER_USERNAME and DOCKER_PASSWORD to login on DockerHub" >&2
+  echo -e "\nUsage: $0" >&2
   exit 2
 }
 
-# login to the DockerHub
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+# print help
+if [[ $# == 1 ]] && [[ ${1} == "--help" ]]; then
+  usage_error
+fi
 
-#### main ####
+if [[ -z ${DOCKER_USERNAME} || -z ${DOCKER_PASSWORD} ]]; then
+  usage_error
+fi
+
 cd "${ThisDir}"
 
+# login to the DockerHub
+echo -e "\nDockerHub login..." >&2
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+# get manage-cluster version to tag the image
 image_tag=$(../k8s-tools/manage-cluster -v)
 
+# tag and push images
 for target in manage-cluster-tf manage-cluster-ks; do
-  docker_image_name="crs4/${target}:${image_tag}"
-  tagged_docker_image="kikkomep/${target}:${image_tag}"
+  docker_image_name="tdm-project/${target}:${image_tag}"
+  tagged_docker_image="${DOCKER_USERNAME}/${target}:${image_tag}"
   docker tag "${docker_image_name}" "${tagged_docker_image}"
+  echo -e "\nPushing ${tagged_docker_image}..." >&2
   docker push ${tagged_docker_image}
 done
