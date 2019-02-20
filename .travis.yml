@@ -10,11 +10,11 @@ services: docker
 install: true
 
 
-build:
+script:
  - docker/build.sh
 
 deploy:
-  - provider: build
+  - provider: script
     script: ./docker/docker_push
     on:
       repo: kikkomep/tdm-manage-cluster
