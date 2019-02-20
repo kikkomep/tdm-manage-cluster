@@ -34,8 +34,8 @@ cd "${ThisDir}"
 image_tag=$(../k8s-tools/manage-cluster -v)
 
 for target in manage-cluster-tf manage-cluster-ks; do
-  docker_image_name="crs4/${target}${image_tag}"
+  docker_image_name="crs4/${target}:${image_tag}"
   tagged_docker_image="kikkomep/${target}:${image_tag}"
-  docker tag "crs4/${target}${image_tag}" "${tagged_docker_image}"
+  docker tag "${docker_image_name}" "${tagged_docker_image}"
   docker push ${tagged_docker_image}
 done
