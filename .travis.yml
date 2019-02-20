@@ -1,0 +1,21 @@
+language: python
+
+python: "3.6"
+
+sudo: required
+
+services: docker
+
+# handled in the Docker image
+install: true
+
+
+build:
+ - docker/build.sh
+
+deploy:
+  - provider: build
+    script: ./docker/docker_push
+    on:
+      repo: tdm-project/tdm-tools
+      #branch: develop
